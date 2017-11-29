@@ -1,0 +1,9 @@
+index,name,radius,tempMin,tempMax,population,habitable,orbitVel
+0,Earth,6371,-88,58,7.6 billion,1,107218
+1,Mars,3389.5,-153,20,0,0,86677
+2,Venus,6051.8,465,465,0,0,126074
+3,Jupiter,69911,-148,725,0,0,47002
+4,Saturn,58232,-178,57,0,0,34701
+5,Uranus,23362,-4500,-224,0,0,24477
+6,Mercury,2439.7,-170,449,0,0,170503
+7,Neptune,24622,-218,-200,0,0,19566
