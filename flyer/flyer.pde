@@ -1,18 +1,26 @@
-PImage ground;
+PImage earthGround;
+PImage marsGround;
+PImage currentWorld = earthGround;
 PShape globe;
+color opacBlue = color(177,208,242,150);
+color opacPurp = color(211,151,237,150);
 MiniPanelSwitch mPanl1 = new MiniPanelSwitch(520);
 MiniPanelSwitch mPanl2 = new MiniPanelSwitch(560);
 MiniPanelSwitch mPanl3 = new MiniPanelSwitch(600);
 MiniPanelSwitch mPanl4 = new MiniPanelSwitch(640);
+GlassPane gPane1 = new GlassPane(190,490,opacBlue);
+GlassPane gPane2 = new GlassPane(160,400,opacBlue);
+Globe thePlanet = new Globe(earthGround);
 
 void setup()
 {
   size(800,600,P3D);
   hint(DISABLE_OPTIMIZED_STROKE);
-  ground = loadImage("ground.jpg");
+  earthGround = loadImage("ground.jpg");
+  marsGround = loadImage("marsGround.jpg");
   noStroke();
-  globe = createShape(SPHERE,1500);
-  globe.setTexture(ground);
+  thePlanet.makeGlobe();
+  
    
 }
 
@@ -20,15 +28,11 @@ void draw()
 {
   background(0);
   
-  drawGlobe();
+  
+  thePlanet.drawGlobe();
   drawPanels();
-  mPanl1.drawSwitch();
-  mPanl2.drawSwitch();
-  mPanl3.drawSwitch();
-  mPanl4.drawSwitch();
+  drawSwitchesMini();
   
-  
-
 }
 
 void drawPanels()
@@ -37,6 +41,8 @@ void drawPanels()
   translate(0,0,0);
   fill(80);
   rect(0,0,width,110);
+  
+  
   
   // small button panel gradiented 
   beginShape();
@@ -66,42 +72,56 @@ void drawPanels()
   vertex(width,550);
   vertex(0,550);
   endShape();
+  
+  
     
   fill(100);
   triangle(0,450,0,350,200,390); //left glass holder
-  fill(177,208,242,150);
-  rect(0,50,160,340,0,10,10,0);
   fill(100);
   triangle(0,525,0,700,200,525); // left bottom
   triangle(800,525,800,700,600,525); // right bottom
-  popMatrix();
-}
-
-void drawGlobe()
-{
-  pushMatrix();
-  translate(width/2, 1700,-1020);
-  //directionalLight(247, 204, 74, 300, 100, -1200);
-  shape(globe);
-  globe.rotateX(radians(-0.1));
-  float x = -0.1;
   
-  if(keyPressed) {
-    if(keyCode==UP) {
-      globe.rotateX(radians(-0.3)); //
-      //x+=0.05;
-    } else if(keyCode==LEFT) {
-      globe.rotateY(radians(0.4));
-    } else if(keyCode==RIGHT) {
-      globe.rotateY(radians(-0.4));
-    }
-  }
+  gPane1.drawPane();
+  gPane2.drawPane();
+  
   popMatrix();
 }
 
 void drawSwitchesMini(){
   
+  mPanl1.drawSwitch();
+  mPanl2.drawSwitch();
+  mPanl3.drawSwitch();
+  mPanl4.drawSwitch();
+
 }
+
+void mouseClicked(){
+      
+   if((mouseX>mPanl1.px&&mouseX<(mPanl1.px+30))&&(mouseY>107&&mouseY<142)){
+     if(mPanl1.isPressed == true){
+       mPanl1.isPressed = false;
+       gPane1.extendPane(false);
+     } else {
+       mPanl1.isPressed = true;
+       gPane1.extendPane(true);
+     }
+   }
+   
+   if((mouseX>mPanl2.px&&mouseX<(mPanl2.px+30))&&(mouseY>107&&mouseY<142)){
+     if(mPanl2.isPressed == true){
+       mPanl2.isPressed = false;
+       gPane2.extendPane(false);
+     } else {
+       mPanl2.isPressed = true;
+       gPane2.extendPane(true);
+     }
+   }
+}
+
+// case switch to see which button sections are pressed
+
+
 
 
 float speed;
