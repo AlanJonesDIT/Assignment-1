@@ -1,8 +1,17 @@
+import ddf.minim.*;
+
+
+Minim minim;
 PImage[] planets = new PImage[8];
 PImage[] pics = new PImage[100];
 PShape globe;
 color opacBlue = color(177,208,242,150);
 color opacPurp = color(211,151,237,150);
+AudioPlayer buttonPress;
+AudioPlayer camera;
+AudioPlayer globeTurn;
+AudioPlayer openSlide;
+AudioPlayer engine;
 Star[] stars = new Star[100];
 MiniPanelSwitch mPanl1 = new MiniPanelSwitch(520);
 MiniPanelSwitch mPanl2 = new MiniPanelSwitch(560);
@@ -26,6 +35,12 @@ void setup()
   planets[5] = requestImage("uranus.jpg");
   planets[6] = requestImage("mercury.jpg");
   planets[7] = requestImage("neptune.jpg");
+  minim = new Minim(this);
+  buttonPress = minim.loadFile("buttonPress.wav");
+  camera = minim.loadFile("camera.mp3");
+  globeTurn = minim.loadFile("globeTurn.mp3");
+  openSlide = minim.loadFile("openSlide2.wav");
+  engine = minim.loadFile("engine.wav",2048);
   loadPlanets();
   listPlanets();
   noStroke();
@@ -34,12 +49,11 @@ void setup()
   for(int i = 0; i < stars.length; i++){
     stars[i] = new Star();
   }
-  
+  engine.loop();
 }
 
 void draw()
 {
-
   background(0);
   for(int i = 0; i < stars.length; i++){
     stars[i].show();
@@ -63,6 +77,15 @@ void draw()
   if(takePic){
     showJustPlanetAndTakePicture();
   }
+  
+  if(keyPressed) {
+      if(keyCode==UP || keyCode==LEFT || keyCode==RIGHT) {
+        globeTurn.play();
+      } 
+    } else {
+      globeTurn.pause();
+      globeTurn.rewind();
+    }
  
 }
 
@@ -160,22 +183,39 @@ void mouseClicked(){
   if((mouseX>mPanl3.px&&mouseX<(mPanl3.px+30))&&(mouseY>107&&mouseY<142)){
       takePic = true; // make camera image and check if camera button is pressed to take image
   // then load the image into array and resize it to display on dashboard
+  
+     camera.pause();
+     camera.rewind();
+     camera.play();
+  
   }
   if((mouseX>mPanl4.px&&mouseX<(mPanl4.px+30))&&(mouseY>107&&mouseY<142)){
+    
+     buttonPress.pause();
+     buttonPress.rewind();
+     buttonPress.play();
+    
     if(mPanl4.isPressed == true){
       mPanl4.isPressed = false;
       dayNight = false;
     } else {
       mPanl4.isPressed = true;
       dayNight = true;
+      buttonPress.play();
     }
   }
-   if((mouseX>mPanl1.px&&mouseX<(mPanl1.px+30))&&(mouseY>107&&mouseY<142)){
+   if((mouseX>mPanl1.px&&mouseX<(mPanl1.px+30))&&(mouseY>107&&mouseY<142)){    
+     
+     
+     
      if(mPanl1.isPressed == true){
        mPanl1.isPressed = false;
        gPane1.extendPane(false);
        showInfo = false;
      } else {
+       openSlide.pause();
+       openSlide.rewind();
+       openSlide.play(); 
        mPanl1.isPressed = true;
        gPane1.extendPane(true);
        gPane2.extendPane(false);
@@ -186,11 +226,15 @@ void mouseClicked(){
    }
    
    if((mouseX>mPanl2.px&&mouseX<(mPanl2.px+30))&&(mouseY>107&&mouseY<142)){
+
      if(mPanl2.isPressed == true){
        mPanl2.isPressed = false;
        gPane2.extendPane(false);
        planetShowing = false;
      } else {
+       openSlide.pause();
+       openSlide.rewind();
+       openSlide.play();
        mPanl2.isPressed = true;
        mPanl1.isPressed = false;
        gPane2.extendPane(true);
