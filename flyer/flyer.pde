@@ -1,7 +1,6 @@
 import ddf.minim.*;
-
-
 Minim minim;
+
 PImage[] planets = new PImage[8];
 PImage[] pics = new PImage[100];
 PShape globe;
@@ -12,6 +11,15 @@ AudioPlayer camera;
 AudioPlayer globeTurn;
 AudioPlayer openSlide;
 AudioPlayer engine;
+AudioPlayer ast1;
+AudioPlayer ast2;
+AudioPlayer ast3;
+AudioPlayer ast4;
+AudioPlayer ast5;
+AudioPlayer ast6;
+AudioPlayer ast7;
+AudioPlayer[] soundClips;
+
 Star[] stars = new Star[100];
 MiniPanelSwitch mPanl1 = new MiniPanelSwitch(520);
 MiniPanelSwitch mPanl2 = new MiniPanelSwitch(560);
@@ -35,12 +43,22 @@ void setup()
   planets[5] = requestImage("uranus.jpg");
   planets[6] = requestImage("mercury.jpg");
   planets[7] = requestImage("neptune.jpg");
+ 
   minim = new Minim(this);
   buttonPress = minim.loadFile("buttonPress.wav");
-  camera = minim.loadFile("camera.mp3");
-  globeTurn = minim.loadFile("globeTurn.mp3");
+  camera = minim.loadFile("camera.wav");
+  globeTurn = minim.loadFile("globeTurn.wav");
   openSlide = minim.loadFile("openSlide2.wav");
   engine = minim.loadFile("engine.wav",2048);
+  soundClips = new AudioPlayer[7];
+  soundClips[0] = minim.loadFile("clip1.wav");
+  soundClips[1] = minim.loadFile("clip2.wav");
+  soundClips[2] = minim.loadFile("clip3.wav");
+  soundClips[3] = minim.loadFile("clip4.wav");
+  soundClips[4] = minim.loadFile("clip5.wav");
+  soundClips[5] = minim.loadFile("clip6.wav");
+  soundClips[6] = minim.loadFile("clip7.wav");
+  
   loadPlanets();
   listPlanets();
   noStroke();
@@ -79,14 +97,36 @@ void draw()
   }
   
   if(keyPressed) {
-      if(keyCode==UP || keyCode==LEFT || keyCode==RIGHT) {
+      if(keyCode==UP) {
+        globeTurn.setPan(0);
         globeTurn.play();
-      } 
+        //globeTurn.setPan(-0.7);
+      } else if(keyCode==LEFT){
+         globeTurn.setPan(+0.8);
+         globeTurn.play();
+      } else if(keyCode==RIGHT){
+         globeTurn.setPan(-0.8);
+         globeTurn.play();
+      }
     } else {
       globeTurn.pause();
       globeTurn.rewind();
     }
- 
+    
+    
+   println(frameCount); 
+   if(frameCount%1200==0){
+     
+
+     soundClips[curClip].setPan(random(-1,1));
+     soundClips[curClip].play();
+     curClip++;
+     
+     if(curClip>6){
+       curClip=0;
+     }
+     
+   }
 }
 
 void loadPlanets()
@@ -103,7 +143,7 @@ void listPlanets()
 {
   for(PlanetText planetText:planetTexts)
   {
-    println(planetText);
+    //println(planetText);
   }
 }
 // 80, 200, 60, 180, 50, 120, 100
@@ -323,7 +363,7 @@ boolean showInfo = false;
 boolean dayNight = false;
 int currentPlanet = 0;
 PImage cameraPic;
-
+int curClip = 0;
 
 ArrayList<PlanetText> planetTexts = new ArrayList<PlanetText>();
 float speed;
