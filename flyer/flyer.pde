@@ -54,10 +54,10 @@ void setup()
   soundClips[0] = minim.loadFile("clip1.wav");
   soundClips[1] = minim.loadFile("clip2.wav");
   soundClips[2] = minim.loadFile("clip3.wav");
-  soundClips[3] = minim.loadFile("clip4.wav");
-  soundClips[4] = minim.loadFile("clip5.wav");
-  soundClips[5] = minim.loadFile("clip6.wav");
-  soundClips[6] = minim.loadFile("clip7.wav");
+  //soundClips[3] = minim.loadFile("clip4.wav");
+  //soundClips[4] = minim.loadFile("clip5.wav");
+  //soundClips[5] = minim.loadFile("clip6.wav");
+  //soundClips[6] = minim.loadFile("clip7.wav");
   
   loadPlanets();
   listPlanets();
@@ -102,10 +102,10 @@ void draw()
         globeTurn.play();
         //globeTurn.setPan(-0.7);
       } else if(keyCode==LEFT){
-         globeTurn.setPan(+0.8);
+         globeTurn.setPan(-0.8);
          globeTurn.play();
       } else if(keyCode==RIGHT){
-         globeTurn.setPan(-0.8);
+         globeTurn.setPan(0.8);
          globeTurn.play();
       }
     } else {
@@ -115,18 +115,20 @@ void draw()
     
     
    println(frameCount); 
-   if(frameCount%1200==0){
+   if(frameCount%600==0){
      
-
      soundClips[curClip].setPan(random(-1,1));
      soundClips[curClip].play();
      curClip++;
      
-     if(curClip>6){
-       curClip=0;
-     }
      
+    if(curClip>2){
+      curClip=0;
+    }
+    soundClips[curClip].rewind(); 
    }
+   
+   
 }
 
 void loadPlanets()
@@ -364,6 +366,7 @@ boolean dayNight = false;
 int currentPlanet = 0;
 PImage cameraPic;
 int curClip = 0;
+int prevCurl;
 
 ArrayList<PlanetText> planetTexts = new ArrayList<PlanetText>();
 float speed;

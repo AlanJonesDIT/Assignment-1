@@ -25,25 +25,4 @@ class GlassPane{
       currentWidth=startWidth;
     }
   }
-  
-  void showText(boolean read){
-    if(!read){
-      
-    } else {
-      // write the text
-      textSize(32);
-       
-      
-    
-      
-      
-      
-      
-      
-      
-      
-      
-    }
-  }
-  
 }

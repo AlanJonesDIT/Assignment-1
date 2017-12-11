@@ -2,8 +2,8 @@ class Star {
   float x = random(width-width*2,width*2); // starting position of star on x axis
   float y = random(height, height+300); // starting position of stars
   float y1 = random(-300,height-200); // starting position of first stars
-  float yspeed = random(1,2); // speed of star
-  float s = random(1,5); // size of star
+  float yspeed = random(1,2.5); // speed of star
+  float s = random(0.2,7); // size of star
   
   void rise(){
     
@@ -19,6 +19,7 @@ class Star {
     if(y<-300){
       y = random(height, height+300);
     }
+
   }
   
   void show(){
