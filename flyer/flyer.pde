@@ -1,8 +1,8 @@
 import ddf.minim.*;
 Minim minim;
 
+PImage[] pics = new PImage[3];
 PImage[] planets = new PImage[8];
-PImage[] pics = new PImage[100];
 PShape globe;
 color opacBlue = color(177,208,242,150);
 color opacPurp = color(211,151,237,150);
@@ -60,7 +60,6 @@ void setup()
   //soundClips[6] = minim.loadFile("clip7.wav");
   
   loadPlanets();
-  listPlanets();
   noStroke();
   bigGlobe.setUpSpheres();
   miniGlobe.setUpSpheres();
@@ -77,6 +76,7 @@ void draw()
     stars[i].show();
     stars[i].rise();
   }
+    
   noStroke();
   bigGlobe.globe.setTexture(planets[currentPlanet]);
   miniGlobe.globe.setTexture(planets[currentPlanet]);
@@ -85,7 +85,7 @@ void draw()
   drawSwitchesMini();
   drawCamera();
   miniGlobe.drawGlobe();
-  
+
   if(planetShowing){
     selectPlanet();
   }
@@ -113,22 +113,18 @@ void draw()
       globeTurn.rewind();
     }
     
-    
    println(frameCount); 
    if(frameCount%600==0){
      
      soundClips[curClip].setPan(random(-1,1));
      soundClips[curClip].play();
      curClip++;
-     
-     
+
     if(curClip>2){
       curClip=0;
     }
     soundClips[curClip].rewind(); 
    }
-   
-   
 }
 
 void loadPlanets()
@@ -141,15 +137,6 @@ void loadPlanets()
   }
 }
 
-void listPlanets()
-{
-  for(PlanetText planetText:planetTexts)
-  {
-    //println(planetText);
-  }
-}
-// 80, 200, 60, 180, 50, 120, 100
-// days - 200, 180, 120, 
 void drawPanels(boolean dayNight)
 {
   int colorMultiplier;
@@ -201,6 +188,13 @@ void drawPanels(boolean dayNight)
   
   gPane1.drawPane();
   gPane2.drawPane();
+
+  
+
+  if(imageExists){
+    tint(255, 170);
+    image(pics[0],30,70,100,100);
+  }
   
   popMatrix();
 }
@@ -346,24 +340,23 @@ void showJustPlanetAndTakePicture(){
   background(0);
   miniGlobe.globe.setTexture(planets[currentPlanet]);
   miniGlobe.drawGlobe();
-  
   cameraPic = get(300, 420,200,180);
-  
-  cameraPic.save("print/cameraPic-" + millis() + ".jpg");
-  //takePic = false;
-  
+  cameraPic.save("data/cameraPic-" + millis() + ".jpg");
+  pics[0] = cameraPic;
+  imageExists = true;
   //clip(300, 420, 200, 180);
   //saveFrame("planet-#####.png");
   takePic = false;
-  noClip();
 }
 
 boolean takePic = false;
+boolean imageExists = false;
 boolean planetShowing = false; // is planet
 boolean planetSelected = false;
 boolean showInfo = false;
 boolean dayNight = false;
 int currentPlanet = 0;
+float picPosY = 70;
 PImage cameraPic;
 int curClip = 0;
 int prevCurl;
